@@ -1,4 +1,3 @@
-import 'package:domino/views/score_view.dart';
 import 'package:flutter/material.dart';
 
 class RegisterView extends StatefulWidget {
@@ -117,16 +116,24 @@ class _RegisterViewState extends State<RegisterView> {
                           playerOneController.text.isNotEmpty &&
                           playerTwoController.text.isNotEmpty
                       ? () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return ScoreScreen(
-                                  playerOne: playerOneController.text,
-                                  playerTwo: playerTwoController.text,
-                                  endGame: int.parse(numberEnd),
-                                );
-                              },
-                            ),
+                          // Navigator.of(context).pushReplacement(
+                          //   MaterialPageRoute(
+                          //     builder: (context) {
+                          //       return ScoreScreen(
+                          //         playerOne: playerOneController.text,
+                          //         playerTwo: playerTwoController.text,
+                          //         endGame: int.parse(numberEnd),
+                          //       );
+                          //     },
+                          //   ),
+                          // );
+                          Navigator.of(context).pushNamed(
+                            "/score",
+                            arguments: {
+                              "playerOne": playerOneController.text,
+                              "playerTwo": playerTwoController.text,
+                              "endGame": int.parse(numberEnd),
+                            },
                           );
                         }
                       : null,

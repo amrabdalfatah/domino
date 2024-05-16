@@ -1,29 +1,25 @@
+import 'package:domino/routes.dart';
 import 'package:domino/views/widgets/show_and_enter_score.dart';
 import 'package:flutter/material.dart';
 
 class ScoreScreen extends StatefulWidget {
-  const ScoreScreen({
-    super.key,
-    required this.playerOne,
-    required this.playerTwo,
-    required this.endGame,
-  });
-
-  final String playerOne;
-  final String playerTwo;
-  final int endGame;
+  const ScoreScreen({super.key});
 
   @override
   State<ScoreScreen> createState() => _ScoreScreenState();
 }
 
 class _ScoreScreenState extends State<ScoreScreen> {
+  late Map parameters;
   late int playerOneScore;
   late int playerTwoScore;
   late int playerOneIncrease;
   late int playerTwoIncrease;
   late TextEditingController controller1;
   late TextEditingController controller2;
+  int? endGame;
+  String? playerOne;
+  String? playerTwo;
 
   @override
   void initState() {
@@ -38,6 +34,22 @@ class _ScoreScreenState extends State<ScoreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    parameters = ModalRoute.of(context)!.settings.arguments as Map;
+    endGame = parameters['endGame'];
+    playerOne = parameters['playerOne'];
+    playerTwo = parameters['playerTwo'];
+    if (playerOneScore >= endGame! || playerTwoScore >= endGame!) {
+      Navigator.of(context).pushReplacementNamed(
+        AppRoutes.result,
+        arguments: {
+          "playerOne": playerOne,
+          "playerTwo": playerTwo,
+          "endGame": endGame,
+          "playerOneScore": playerOneScore,
+          "playerTwoScore": playerTwoScore,
+        },
+      );
+    }
     return Scaffold(
       backgroundColor: Colors.red,
       body: Padding(
@@ -51,7 +63,7 @@ class _ScoreScreenState extends State<ScoreScreen> {
                   child: ShowAndEnterScore(
                     controller: controller2,
                     color: Colors.yellow,
-                    player: widget.playerTwo,
+                    player: playerTwo!,
                     score: "$playerTwoScore",
                     changeValue: (val) {
                       try {
@@ -81,7 +93,7 @@ class _ScoreScreenState extends State<ScoreScreen> {
                   child: ShowAndEnterScore(
                     controller: controller1,
                     color: Colors.green,
-                    player: widget.playerOne,
+                    player: playerOne!,
                     score: "$playerOneScore",
                     changeValue: (val) {
                       try {
